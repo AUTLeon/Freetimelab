@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tetris Spiel</title>
+<style>
+  html, body {
+    margin: 0; padding: 0;
+    background: linear-gradient(to right, #141e30, #243b55);
+    font-family: Arial, sans-serif;
+    color: white;
+    text-align: center;
+    user-select: none;
+  }
+  h1 {
+    margin-top: 20px;
+  }
+  #tetrisCanvas {
+    background: #000;
+    border: 4px solid white;
+    border-radius: 10px;
+    display: block;
+    margin: 20px auto;
+    width: 320px;
+    height: 640px;
+  }
+  #score {
+    font-size: 24px;
+    margin: 10px 0;
+  }
+  #controls {
+    margin-bottom: 20px;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 5px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    background-color: white;
+    color: #243b55;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  button:hover {
+    background-color: #f0f0f0;
+  }
+  #pauseBtn {
+    background-color: white;
+    color: #243b55;
+  }
+</style>
+</head>
+<body>
+
+<h1>Tetris Spiel</h1>
+<div id="score">Punkte: 0</div>
+<canvas id="tetrisCanvas" width="320" height="640"></canvas>
+<div id="controls">
+  <button id="startBtn">Start</button>
+  <button id="pauseBtn">Pause</button>
+</div>
+
+<script>
+  const canvas = document.getElementById("tetrisCanvas");
+  const ctx = canvas.getContext("2d");
+  const scoreEl = document.getElementById("score");
+  const startBtn = document.getElementById("startBtn");
+  const pauseBtn = document.getElementById("pauseBtn");
+
+  const ROWS = 20;
+  const COLS = 10;
+  const BLOCK_SIZE = canvas.width / COLS;
+
+  // Spielfeld als 2D-Array (ROWS x COLS), gefüllt mit 0 = leer, >0 = Blockfarbe
+  let grid = [];
+  let score = 0;
+  let dropInterval = 1000;
+  let lastDropTime = 0;
+  let gameOver = false;
+  let paused = false;
+
+  // Tetris Formen (Tetrominos) mit Farben (Zahlen > 0)
+  const SHAPES = {
+    I: [
+      [0,0,0,0],
+      [1,1,1,1],
+      [0,0,0,0],
+      [0,0,0,0]
+    ],
+    J: [
+      [2,0,0],
+      [2,2,2],
+      [0,0,0]
+    ],
+    L: [
+      [0,0,3],
+      [3,3,3],
+      [0,0,0]
+    ],
+    O: [
+      [4,4],
+      [4,4]
+    ],
+    S: [
+      [0,5,5],
+      [5,5,0],
+      [0,0,0]
+    ],
+    T: [
+      [0,6,0],
+      [6,6,6],
+      [0,0,0]
+    ],
+    Z: [
+      [7,7,0],
+      [0,7,7],
+      [0,0,0]
+    ]
+  };
+
+  const COLORS = [
+    null,
+    '#00ffff', // I - cyan
+    '#0000ff', // J - blue
+    '#ff7f00', // L - orange
+    '#ffff00', // O - yellow
+    '#00ff00', // S - green
+    '#800080', // T - purple
+    '#ff0000'  // Z - red
+  ];
+
+  function createEmptyGrid() {
+    let newGrid = [];
+    for(let r=0; r<ROWS; r++) {
+      newGrid[r] = [];
+      for(let c=0; c<COLS; c++) {
+        newGrid[r][c] = 0;
+      }
+    }
+    return newGrid;
+  }
+
+  // Aktueller Tetromino
+  let currentPiece = null;
+
+  function randomPiece() {
+    const pieces = Object.keys(SHAPES);
+    const rand = pieces[Math.floor(Math.random() * pieces.length)];
+    return {
+      shape: SHAPES[rand],
+      color: COLORS[SHAPES[rand][1][1]] || COLORS[1], // Farbe passend zum Code in Shape
+      x: Math.floor(COLS/2) - Math.ceil(SHAPES[rand][0].length/2),
+      y: 0
+    };
+  }
+
+  function rotate(matrix) {
+    const N = matrix.length;
+    let result = [];
+    for(let i=0; i<N; i++) {
+      result[i] = [];
+      for(let j=0; j<N; j++) {
+        result[i][j] = matrix[N-j-1][i];
+      }
+    }
+    return result;
+  }
+
+  function collide(grid, piece) {
+    const shape = piece.shape;
+    for(let y=0; y<shape.length; y++) {
+      for(let x=0; x<shape[y].length; x++) {
+        if(shape[y][x] && 
+          (grid[piece.y + y] && grid[piece.y + y][piece.x + x]) !== 0) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  function merge(grid, piece) {
+    const shape = piece.shape;
+    for(let y=0; y<shape.length; y++) {
+      for(let x=0; x<shape[y].length; x++) {
+        if(shape[y][x]) {
+          grid[piece.y + y][piece.x + x] = shape[y][x];
+        }
+      }
+    }
+  }
+
+  function clearLines() {
+    let linesCleared = 0;
+    outer: for(let y=ROWS-1; y>=0; y--) {
+      for(let x=0; x<COLS; x++) {
+        if(grid[y][x] === 0) {
+          continue outer;
+        }
+      }
+      // Linie voll - entfernen und Zeilen nach unten schieben
+      const row = grid.splice(y,1)[0].fill(0);
+      grid.unshift(row);
+      linesCleared++;
+      y++; // nochmal prüfen, da Zeile verschoben
+    }
+    if(linesCleared > 0) {
+      score += linesCleared * 100;
+      scoreEl.textContent = `Punkte: ${score}`;
+    }
+  }
+
+  function drawBlock(x, y, colorIndex) {
+    ctx.fillStyle = COLORS[colorIndex];
+    ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+    ctx.strokeStyle = "#222";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+  }
+
+  function drawGrid() {
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for(let y=0; y<ROWS; y++) {
+      for(let x=0; x<COLS; x++) {
+        if(grid[y][x] !== 0) {
+          drawBlock(x, y, grid[y][x]);
+        }
+      }
+    }
+  }
+
+  function drawPiece(piece) {
+    const shape = piece.shape;
+    for(let y=0; y<shape.length; y++) {
+      for(let x=0; x<shape[y].length; x++) {
+        if(shape[y][x]) {
+          drawBlock(piece.x + x, piece.y + y, shape[y][x]);
+        }
+      }
+    }
+  }
+
+  function movePiece(dirX, dirY) {
+    currentPiece.x += dirX;
+    currentPiece.y += dirY;
+    if(collide(grid, currentPiece)) {
+      currentPiece.x -= dirX;
+      currentPiece.y -= dirY;
+      return false;
+    }
+    return true;
+  }
+
+  function rotatePiece() {
+    let rotated = rotate(currentPiece.shape);
+    let oldX = currentPiece.x;
+    let oldY = currentPiece.y;
+
+    currentPiece.shape = rotated;
+
+    // Wand-Korrektur (Wall Kick)
+    if(collide(grid, currentPiece)) {
+      // Versuche links und rechts auszuweichen
+      if(!movePiece(-1, 0)) {
+        if(!movePiece(1, 0)) {
+          currentPiece.shape = rotate(rotate(rotate(rotated))); // zurückrotieren
+          currentPiece.x = oldX;
+          currentPiece.y = oldY;
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  function dropPiece() {
+    if(!movePiece(0, 1)) {
+      merge(grid, currentPiece);
+      clearLines();
+      currentPiece = randomPiece();
+      if(collide(grid, currentPiece)) {
+        gameOver = true;
+      }
+    }
+  }
+
+  function draw() {
+    drawGrid();
+    if(currentPiece) drawPiece(currentPiece);
+  }
+
+  function update(time=0) {
+    if(gameOver || paused) return;
+    if(time - lastDropTime > dropInterval) {
+      dropPiece();
+      lastDropTime = time;
+    }
+    draw();
+    if(!gameOver) requestAnimationFrame(update);
+    else alert("Spiel vorbei! Deine Punktzahl: " + score);
+  }
+
+  function resetGame() {
+    grid = createEmptyGrid();
+    score = 0;
+    scoreEl.textContent = "Punkte: 0";
+    currentPiece = randomPiece();
+    gameOver = false;
+    paused = false;
+    dropInterval = 1000;
+    lastDropTime = 0;
+    draw();
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if(gameOver || paused) return;
+    if(e.key === "ArrowLeft") movePiece(-1,0);
+    else if(e.key === "ArrowRight") movePiece(1,0);
+    else if(e.key === "ArrowDown") dropPiece();
+    else if(e.key === "ArrowUp") rotatePiece();
+    else if(e.key.toLowerCase() === "p") togglePause();
+  });
+
+  function togglePause() {
+    if(gameOver) return;
+    paused = !paused;
+    pauseBtn.textContent = paused ? "Fortsetzen" : "Pause";
+    if(!paused) {
+      lastDropTime = performance.now();
+      update();
+    }
+  }
+
+  startBtn.addEventListener("click", () => {
+    resetGame();
+    update();
+  });
+
+  pauseBtn.addEventListener("click", togglePause);
+
+  // Startet das Spiel nicht automatisch, erst nach Klick auf Start
+  drawGrid();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Guess the Number</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+  body {
+    font-family: 'Roboto Mono', monospace;
+    background: linear-gradient(135deg, #2c3e50, #4ca1af);
+    margin: 0;
+    padding: 40px 20px;
+    color: #eee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    user-select: none;
+  }
+
+  h1 {
+    margin-bottom: 15px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px #00d8ff;
+  }
+
+  #game-container {
+    background: #1b2838;
+    padding: 25px 30px;
+    border-radius: 14px;
+    box-shadow:
+      0 0 15px rgba(0, 216, 255, 0.6),
+      inset 0 0 25px rgba(0, 216, 255, 0.25);
+    width: 320px;
+    text-align: center;
+  }
+
+  #instructions {
+    margin-bottom: 20px;
+    font-size: 17px;
+    color: #a3b1c1;
+  }
+
+  input[type="number"] {
+    width: 70%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: none;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    outline: none;
+    box-shadow:
+      inset 3px 3px 6px #14202c,
+      inset -3px -3px 6px #24445e;
+    background: #324860;
+    color: #d0d6e0;
+    transition: background 0.3s ease;
+  }
+
+  input[type="number"]:focus {
+    background: #3d577a;
+    box-shadow:
+      inset 2px 2px 4px #1a2735,
+      inset -2px -2px 4px #4a698c;
+  }
+
+  button {
+    margin-top: 20px;
+    padding: 12px 35px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1b2838;
+    background: #00d8ff;
+    border: none;
+    border-radius: 30px;
+    box-shadow:
+      0 6px 18px rgba(0, 216, 255, 0.55);
+    cursor: pointer;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+  }
+
+  button:hover {
+    background: #00b5ff;
+    box-shadow:
+      0 8px 22px rgba(0, 181, 255, 0.8);
+  }
+
+  button:active {
+    background: #008fcc;
+    box-shadow: none;
+  }
+
+  #feedback {
+    margin-top: 25px;
+    font-size: 20px;
+    font-weight: 600;
+    min-height: 28px;
+    color: #00d8ff;
+    text-shadow: 0 0 8px #00d8ff;
+    min-height: 32px;
+  }
+
+  #tries {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #a3b1c1;
+  }
+</style>
+</head>
+<body>
+
+<h1>Guess the Number</h1>
+
+<div id="game-container">
+  <div id="instructions">Errate eine Zahl zwischen 1 und 100</div>
+  <input type="number" id="guessInput" min="1" max="100" placeholder="Dein Tipp..." />
+  <button id="guessBtn">Raten</button>
+  <div id="feedback"></div>
+  <div id="tries"></div>
+  <button id="resetBtn" style="display:none; margin-top:20px;">Neues Spiel</button>
+</div>
+
+<script>
+  const guessInput = document.getElementById('guessInput');
+  const guessBtn = document.getElementById('guessBtn');
+  const feedback = document.getElementById('feedback');
+  const triesDisplay = document.getElementById('tries');
+  const resetBtn = document.getElementById('resetBtn');
+
+  let secretNumber;
+  let tries;
+
+  function init() {
+    secretNumber = Math.floor(Math.random() * 100) + 1;
+    tries = 0;
+    feedback.textContent = '';
+    triesDisplay.textContent = '';
+    guessInput.value = '';
+    guessInput.disabled = false;
+    guessBtn.disabled = false;
+    resetBtn.style.display = 'none';
+    guessInput.focus();
+  }
+
+  function checkGuess() {
+    const guess = Number(guessInput.value);
+    if (!guess || guess < 1 || guess > 100) {
+      feedback.textContent = 'Bitte gib eine gültige Zahl zwischen 1 und 100 ein!';
+      feedback.style.color = '#ff6b6b';
+      return;
+    }
+    tries++;
+    if (guess === secretNumber) {
+      feedback.textContent = `🎉 Richtig! Die Zahl war ${secretNumber}.`;
+      feedback.style.color = '#7bed9f';
+      triesDisplay.textContent = `Du hast ${tries} Versuch${tries > 1 ? 'e' : ''} gebraucht.`;
+      guessInput.disabled = true;
+      guessBtn.disabled = true;
+      resetBtn.style.display = 'inline-block';
+    } else if (guess < secretNumber) {
+      feedback.textContent = '📈 Zu niedrig!';
+      feedback.style.color = '#00d8ff';
+      triesDisplay.textContent = `Versuche: ${tries}`;
+    } else {
+      feedback.textContent = '📉 Zu hoch!';
+      feedback.style.color = '#00d8ff';
+      triesDisplay.textContent = `Versuche: ${tries}`;
+    }
+    guessInput.value = '';
+    guessInput.focus();
+  }
+
+  guessBtn.addEventListener('click', checkGuess);
+  guessInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      checkGuess();
+    }
+  });
+
+  resetBtn.addEventListener('click', init);
+
+  init();
+</script>
+
+</body>
+</html>

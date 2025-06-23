@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pong Spiel</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+  body {
+    margin: 0;
+    padding: 30px 20px;
+    font-family: 'Roboto Mono', monospace;
+    background: linear-gradient(135deg, #2c3e50, #4ca1af);
+    color: #eee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 95vh;
+    user-select: none;
+  }
+
+  h1 {
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px #00d8ff;
+    margin-bottom: 20px;
+  }
+
+  #pongCanvas {
+    background: #1b2838;
+    border-radius: 14px;
+    box-shadow:
+      0 0 20px #00d8ff,
+      inset 0 0 25px #0077a3;
+    width: 90vw;
+    max-width: 700px;
+    height: 60vh;
+    max-height: 450px;
+    display: block;
+  }
+
+  #controls {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    width: 90vw;
+    max-width: 700px;
+  }
+
+  select, button {
+    background: #0077a3;
+    border: none;
+    border-radius: 30px;
+    color: #eee;
+    padding: 12px 28px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 0 10px #00baff;
+    font-family: 'Roboto Mono', monospace;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  select {
+    min-width: 140px;
+  }
+
+  button:hover, select:hover {
+    background: #00a8e8;
+    box-shadow: 0 0 15px #00d8ff;
+  }
+
+  button:active {
+    background: #005f80;
+    box-shadow: none;
+  }
+
+  #score {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #00d8ff;
+    text-shadow: 0 0 10px #00baff;
+  }
+</style>
+</head>
+<body>
+
+<h1>Pong Spiel</h1>
+
+<canvas id="pongCanvas"></canvas>
+
+<div id="score">Spieler 1: 0 | Spieler 2: 0</div>
+
+<div id="controls">
+  <select id="mode" title="Spielmodus wählen">
+    <option value="single">Einzelspieler</option>
+    <option value="multi">Mehrspieler</option>
+  </select>
+
+  <select id="difficulty" title="Schwierigkeit wählen">
+    <option value="leicht">Leicht</option>
+    <option value="mittel" selected>Mittel</option>
+    <option value="schwer">Schwer</option>
+  </select>
+
+  <button id="startBtn">Start</button>
+  <button id="pauseBtn">Pause</button>
+</div>
+
+<script>
+  const canvas = document.getElementById('pongCanvas');
+  const ctx = canvas.getContext('2d');
+
+  let canvasWidth, canvasHeight;
+  function resizeCanvas() {
+    canvasWidth = canvas.clientWidth;
+    canvasHeight = canvas.clientHeight;
+    canvas.width = canvasWidth * devicePixelRatio;
+    canvas.height = canvasHeight * devicePixelRatio;
+    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  // Spielvariablen
+  const paddleWidth = 12;
+  const paddleHeight = 100;
+  const ballSize = 14;
+  let player1 = { x: 20, y: 0 };
+  let player2 = { x: 0, y: 0 };
+  let ball = { x: 0, y: 0, vx: 0, vy: 0 };
+  let upPressed = false, downPressed = false, wPressed = false, sPressed = false;
+  let score1 = 0, score2 = 0;
+  let isPaused = false;
+  let singlePlayer = true;
+  let botDifficulty = 'mittel';
+
+  function resetBall() {
+    ball.x = canvasWidth / 2 - ballSize / 2;
+    ball.y = canvasHeight / 2 - ballSize / 2;
+    let angle = (Math.random() * Math.PI / 2 - Math.PI / 4);
+    let speed = 3;
+    ball.vx = speed * (Math.random() < 0.5 ? -1 : 1) * Math.cos(angle);
+    ball.vy = speed * Math.sin(angle);
+  }
+
+  function updateScore() {
+    document.getElementById('score').textContent = `Spieler 1: ${score1} | Spieler 2: ${score2}`;
+  }
+
+  function drawRect(x, y, w, h, color) {
+    ctx.fillStyle = color;
+    ctx.shadowColor = '#00d8ff';
+    ctx.shadowBlur = 8;
+    ctx.fillRect(x, y, w, h);
+    ctx.shadowBlur = 0;
+  }
+
+  function drawBall() {
+    ctx.fillStyle = '#00d8ff';
+    ctx.shadowColor = '#00d8ff';
+    ctx.shadowBlur = 15;
+    ctx.beginPath();
+    ctx.arc(ball.x + ballSize / 2, ball.y + ballSize / 2, ballSize / 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+
+  function moveBot() {
+    let errorChance = { leicht: 0.3, mittel: 0.15, schwer: 0.05 }[botDifficulty] || 0.15;
+    if (Math.random() > errorChance) {
+      if (ball.y < player2.y + paddleHeight / 2) player2.y -= 4;
+      else if (ball.y > player2.y + paddleHeight / 2) player2.y += 4;
+    }
+    player2.y = Math.max(Math.min(player2.y, canvasHeight - paddleHeight), 0);
+  }
+
+  function update() {
+    if (isPaused) return;
+
+    // Spieler 1 Bewegung
+    if (wPressed) player1.y -= 6;
+    if (sPressed) player1.y += 6;
+
+    // Spieler 2 Bewegung (Multi oder Bot)
+    if (!singlePlayer) {
+      if (upPressed) player2.y -= 6;
+      if (downPressed) player2.y += 6;
+    } else {
+      moveBot();
+    }
+
+    // Grenzen prüfen
+    player1.y = Math.max(0, Math.min(player1.y, canvasHeight - paddleHeight));
+    player2.y = Math.max(0, Math.min(player2.y, canvasHeight - paddleHeight));
+
+    // Ball Bewegung
+    ball.x += ball.vx;
+    ball.y += ball.vy;
+
+    // Oben/Unten Kollision
+    if (ball.y <= 0) {
+      ball.y = 0;
+      ball.vy *= -1;
+    } else if (ball.y + ballSize >= canvasHeight) {
+      ball.y = canvasHeight - ballSize;
+      ball.vy *= -1;
+    }
+
+    // Kollision mit Spieler 1
+    if (ball.x <= player1.x + paddleWidth &&
+        ball.y + ballSize >= player1.y &&
+        ball.y <= player1.y + paddleHeight) {
+
+      let relativeY = (player1.y + paddleHeight / 2) - (ball.y + ballSize / 2);
+      let normalized = relativeY / (paddleHeight / 2);
+      let angle = normalized * Math.PI / 4;
+      let speed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy) + 0.3;
+      ball.vx = speed * Math.cos(angle);
+      ball.vy = -speed * Math.sin(angle);
+      ball.x = player1.x + paddleWidth;
+    }
+
+    // Kollision mit Spieler 2
+    if (ball.x + ballSize >= player2.x &&
+        ball.y + ballSize >= player2.y &&
+        ball.y <= player2.y + paddleHeight) {
+
+      let relativeY = (player2.y + paddleHeight / 2) - (ball.y + ballSize / 2);
+      let normalized = relativeY / (paddleHeight / 2);
+      let angle = normalized * Math.PI / 4;
+      let speed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy) + 0.3;
+      ball.vx = -speed * Math.cos(angle);
+      ball.vy = -speed * Math.sin(angle);
+      ball.x = player2.x - ballSize;
+    }
+
+    // Punktestand aktualisieren & Ball zurücksetzen
+    if (ball.x < 0) {
+      score2++;
+      updateScore();
+      resetBall();
+    } else if (ball.x > canvasWidth) {
+      score1++;
+      updateScore();
+      resetBall();
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+    // Mittellinie
+    ctx.strokeStyle = '#00baff';
+    ctx.lineWidth = 4;
+    ctx.setLineDash([15, 20]);
+    ctx.beginPath();
+    ctx.moveTo(canvasWidth / 2, 0);
+    ctx.lineTo(canvasWidth / 2, canvasHeight);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Paddles und Ball
+    drawRect(player1.x, player1.y, paddleWidth, paddleHeight, '#00d8ff');
+    drawRect(player2.x, player2.y, paddleWidth, paddleHeight, '#00d8ff');
+    drawBall();
+  }
+
+  function gameLoop() {
+    update();
+    draw();
+    requestAnimationFrame(gameLoop);
+  }
+
+  // Tastatur-Events
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowUp') upPressed = true;
+    if (e.key === 'ArrowDown') downPressed = true;
+    if (e.key.toLowerCase() === 'w') wPressed = true;
+    if (e.key.toLowerCase() === 's') sPressed = true;
+    if (e.key === ' ') togglePause();
+  });
+
+  document.addEventListener('keyup', e => {
+    if (e.key === 'ArrowUp') upPressed = false;
+    if (e.key === 'ArrowDown') downPressed = false;
+    if (e.key.toLowerCase() === 'w') wPressed = false;
+    if (e.key.toLowerCase() === 's') sPressed = false;
+  });
+
+  // Pause umschalten
+  function togglePause() {
+    isPaused = !isPaused;
+    pauseBtn.textContent = isPaused ? 'Fortsetzen' : 'Pause';
+  }
+
+  // Spielmodus und Schwierigkeit setzen & neu starten
+  function setMode(isSingle, difficulty = 'mittel') {
+    singlePlayer = isSingle;
+    botDifficulty = difficulty;
+    score1 = 0;
+    score2 = 0;
+    player1.y = canvasHeight / 2 - paddleHeight / 2;
+    player2.y = canvasHeight / 2 - paddleHeight / 2;
+    player2.x = canvasWidth - paddleWidth - 20;
+    resetBall();
+    updateScore();
+  }
+
+  const startBtn = document.getElementById('startBtn');
+  const pauseBtn = document.getElementById('pauseBtn');
+
+  startBtn.addEventListener('click', () => {
+    const mode = document.getElementById('mode').value;
+    const difficulty = document.getElementById('difficulty').value;
+    setMode(mode === 'single', difficulty);
+    if (isPaused) togglePause();
+  });
+
+  pauseBtn.addEventListener('click', togglePause);
+
+  // Initial starten
+  setMode(true, 'mittel');
+  gameLoop();
+
+</script>
+
+</body>
+</html>

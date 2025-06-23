@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset ="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" href=".\images\icons\icon.jpg" type="image/jpg">
+        <title>login</title>
+    </head>
+    <body>
+        <div class="navbar">
+            <h1>freetimelab</h1>
+            <button id="toggle-mode">Dark Mode wechseln</button>
+        </div>
+        <div class="downnavbar">
+            <p>If you find any errors, please contact the following email address: autleongames@gmail.com</p>
+        </div>
+        <div class="container">
+            <h2>Login</h2>
+            <input type="text" id="usernameInput" placeholder="username">
+            <input type="password" id="passwordInput" placeholder="password">
+            <br>
+            <button onclick="login()">Login</button>
+            <div class="error" id="errorMessage"></div>
+            <p>For login details please contact the following email: autleongames@gmail.com</p>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+        <script src="script.js"></script>    
+    </body>
+</html>

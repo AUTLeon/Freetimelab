@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" href=".\images\icons\icon.jpg" type="image/jpg">
+        <title>freetimelab</title>
+    </head>
+    <body>
+        <div class="navbar">
+            <a href="content.html"><h1>freetimelab</h1></a>
+            <button id="toggle-mode">Dark Mode wechseln</button>
+            <button onclick="logout()">logout</button>
+        </div>
+        <div class="downnavbar">
+            <p>If you find any errors, please contact the following email address: autleongames@gmail.com</p>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="search Game..." oninput="filterGames()">
+        </div>
+        <div class="game-container" id="gameContainer">
+            <div class="game" data-name="Pong" onclick="openGame('./games/pong.html')">
+                <img src=".\images\games\pong-title.jpg" alt="Pong">
+                <h2>Pong</h2>
+            </div>
+            <div class="game" data-name="Tetris" onclick="openGame('./games/tetris.html')">
+                <img src=".\images\games\tetris-title.jpg" alt="Tetris">
+                <h2>Tetris</h2>
+            </div>
+            <div class="game" data-name="Snake" onclick="openGame('./games/snake.html')">
+                <img src=".\images\games\snake-title.jpg" alt="Snake">
+                <h2>Snake</h2>
+            </div>
+            <div class="game" data-name="Tic-Tac-Toe" onclick="openGame('./games/TicTacToe.html')">
+                <img src=".\images\games\tic-tac-toe-title.jpg" alt="Tic-Tac-Toe">
+                <h2>Tic-Tac-Toe</h2>
+            </div>
+            <div class="game" data-name="Flappy Bird" onclick="openGame('./games/flappybird.html')">
+                <img src=".\images\games\flappy-bird-title.jpg" alt="Flappy Bird">
+                <h2>Flappy Bird</h2>
+            </div>
+            <div class="game" data-name="Asteroids" onclick="openGame('./games/asteroids.html')">
+                <img src=".\images\games\asteroids-title.jpg" alt="Asteroids">
+                <h2>Asteroids</h2>
+            </div>
+            <div class="game" data-name="Breakout" onclick="openGame('./games/breakout.html')">
+                <img src=".\images\games\breakout-title.jpg" alt="Breakout">
+                <h2>Breakout</h2>
+            </div>
+            <div class="game" data-name="Space Invaders" onclick="openGame('./games/spaceinvaders.html')">
+                <img src=".\images\games\space-invaders-title.jpg" alt="Space Invaders">
+                <h2>Space Invaders</h2>
+            </div>
+            <div class="game" data-name="Minesweeper" onclick="openGame('./games/minesweeper.html')">
+                <img src=".\images\games\minesweeper-title.jpg" alt="Minesweeper">
+                <h2>Minesweeper</h2>
+            </div>
+            <div class="game" data-name="Guess the Number" onclick="openGame('./games/guess_the_number.html')">
+                <img src=".\images\games\guess-the-number-title.jpg" alt="Guess the Number">
+                <h2>Guess the Number</h2>
+            </div>
+            <div class="game" data-name="Memory" onclick="openGame('./games/memory.html')">
+                <img src=".\images\games\memory-title.jpg" alt="Memory">
+                <h2>Memory</h2>
+            </div>
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" href=".\images\icons\icon.jpg" type="image/jpg">
+        <title>freetimelab</title>
+    </head>
+    <body>
+        <h1>gallery</h1>
+        <h2>Nature & Buildings</h2>
+        <div class="gallery">
+            <img src=".\images\gallery\bild1.jpg" alt="Image 1" onclick="openLightbox(this)">
+            <img src=".\images\gallery\bild2.jpg" alt="Image 2" onclick="openLightbox(this)">
+            <img src=".\images\gallery\bild3.jpg" alt="Image 3" onclick="openLightbox(this)">
+            <img src=".\images\gallery\bild4.jpg" alt="Image 4" onclick="openLightbox(this)">
+            <img src=".\images\gallery\bild5.jpg" alt="Image 5" onclick="openLightbox(this)">
+            <img src=".\images\gallery\bild6.jpg" alt="Image 6" onclick="openLightbox(this)">
+            <img src=".\images\gallery\bild7.jpg" alt="Image 7" onclick="openLightbox(this)">
+            <img src=".\images\gallery\bild8.jpg" alt="Image 8" onclick="openLightbox(this)">
+        </div>
+        <h2>Customized Salzburg</h2>
+        <div class="gallery">
+            <img src=".\images\gallery\bild9.jpg" alt="Image 9" onclick="openLightbox(this)">
+            <img src=".\images\gallery\bild10.jpg" alt="Image 10" onclick="openLightbox(this)">
+            <img src=".\images\gallery\bild11.jpg" alt="Image 11" onclick="openLightbox(this)">
+            <img src=".\images\gallery\bild12.jpg" alt="Image 12" onclick="openLightbox(this)">
+            <img src=".\images\gallery\bild13.jpg" alt="Image 13" onclick="openLightbox(this)">
+            <img src=".\images\gallery\bild14.jpg" alt="Image 14" onclick="openLightbox(this)">
+            <img src=".\images\gallery\bild15.jpg" alt="Image 15" onclick="openLightbox(this)">
+            <img src=".\images\gallery\bild16.jpg" alt="Image 16" onclick="openLightbox(this)">
+            <img src=".\images\gallery\bild17.jpg" alt="Image 17" onclick="openLightbox(this)">
+            <img src=".\images\gallery\bild18.jpg" alt="Image 18" onclick="openLightbox(this)">
+        </div>     
+        <div class="navbar">
+            <a href="content.html"><h1>freetimelab</h1></a>
+            <button id="toggle-mode">Dark Mode</button>
+            <button onclick="logout()">logout</button>
+        </div>
+        <div class="downnavbar">
+            <p>If you find any errors, please contact the following email address: autleongames@gmail.com</p>
+        </div>
+        <div id="lightbox" class="lightbox">
+            <button class="close-btn" onclick="closeLightbox()">X</button>
+            <img id="lightbox-image" src="" alt="">
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>

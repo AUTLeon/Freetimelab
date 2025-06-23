@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Memory Spiel</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+  body {
+    font-family: 'Roboto Mono', monospace;
+    background: linear-gradient(135deg, #2c3e50, #4ca1af);
+    margin: 0;
+    padding: 30px 20px;
+    color: #eee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    user-select: none;
+  }
+
+  h1 {
+    margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-shadow: 0 0 6px #00d8ff;
+  }
+
+  #game {
+    width: 360px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 14px;
+    background: #1b2838;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow:
+      0 0 15px rgba(0, 216, 255, 0.6),
+      inset 0 0 25px rgba(0, 216, 255, 0.25);
+  }
+
+  .card {
+    width: 80px;
+    height: 110px;
+    perspective: 700px;
+  }
+
+  .card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+    box-shadow:
+      4px 4px 8px #132036,
+      -4px -4px 8px #2d567f;
+  }
+
+  .card.flipped .card-inner {
+    transform: rotateY(180deg);
+  }
+
+  .card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 42px;
+    user-select: none;
+  }
+
+  .card-front {
+    background: linear-gradient(145deg, #324860, #243347);
+    color: #d0d6e0;
+    box-shadow:
+      inset 3px 3px 8px #1a2735,
+      inset -3px -3px 8px #4a698c;
+  }
+
+  .card-back {
+    background: linear-gradient(145deg, #00d8ff, #0096cc);
+    transform: rotateY(180deg);
+    box-shadow:
+      0 0 15px #00baff,
+      inset 0 0 25px #0077a3;
+    color: white;
+  }
+
+  #status {
+    margin-top: 25px;
+    font-size: 20px;
+    font-weight: 700;
+    min-height: 28px;
+    letter-spacing: 1.3px;
+    color: #00d8ff;
+    text-shadow: 0 0 8px #00d8ff;
+  }
+
+  button#resetBtn {
+    margin-top: 25px;
+    padding: 12px 36px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1b2838;
+    background: #00d8ff;
+    border: none;
+    border-radius: 30px;
+    box-shadow:
+      0 6px 18px rgba(0, 216, 255, 0.55);
+    cursor: pointer;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+  }
+
+  button#resetBtn:hover {
+    background: #00b5ff;
+    box-shadow:
+      0 8px 22px rgba(0, 181, 255, 0.8);
+  }
+
+  button#resetBtn:active {
+    background: #008fcc;
+    box-shadow: none;
+  }
+</style>
+</head>
+<body>
+
+<h1>Memory Spiel</h1>
+
+<div id="game"></div>
+<div id="status"></div>
+<button id="resetBtn">Neues Spiel</button>
+
+<script>
+  const symbols = ['🍎', '🍌', '🍇', '🍒', '🥝', '🍍', '🍉', '🍓'];
+  let deck = [];
+  let flippedCards = [];
+  let matchedCards = 0;
+  let busy = false;
+
+  const gameDiv = document.getElementById('game');
+  const statusDiv = document.getElementById('status');
+  const resetBtn = document.getElementById('resetBtn');
+
+  function shuffle(array) {
+    for(let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  function init() {
+    deck = shuffle([...symbols, ...symbols]);
+    flippedCards = [];
+    matchedCards = 0;
+    busy = false;
+    statusDiv.textContent = 'Finde alle Paare!';
+    gameDiv.innerHTML = '';
+
+    for(let i = 0; i < deck.length; i++) {
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.dataset.symbol = deck[i];
+      card.innerHTML = `
+        <div class="card-inner">
+          <div class="card-front">?</div>
+          <div class="card-back">${deck[i]}</div>
+        </div>
+      `;
+      card.addEventListener('click', () => onCardClick(card));
+      gameDiv.appendChild(card);
+    }
+  }
+
+  function onCardClick(card) {
+    if(busy || card.classList.contains('flipped')) return;
+
+    card.classList.add('flipped');
+    flippedCards.push(card);
+
+    if(flippedCards.length === 2) {
+      busy = true;
+      if(flippedCards[0].dataset.symbol === flippedCards[1].dataset.symbol) {
+        matchedCards += 2;
+        flippedCards = [];
+        busy = false;
+        statusDiv.textContent = `Gut gemacht! Paare gefunden: ${matchedCards / 2} / ${symbols.length}`;
+        if(matchedCards === deck.length) {
+          statusDiv.textContent = '🎉 Herzlichen Glückwunsch! Du hast alle Paare gefunden!';
+        }
+      } else {
+        setTimeout(() => {
+          flippedCards.forEach(c => c.classList.remove('flipped'));
+          flippedCards = [];
+          busy = false;
+          statusDiv.textContent = `Versuche weiter! Paare gefunden: ${matchedCards / 2} / ${symbols.length}`;
+        }, 1200);
+      }
+    }
+  }
+
+  resetBtn.addEventListener('click', init);
+
+  init();
+</script>
+
+</body>
+</html>

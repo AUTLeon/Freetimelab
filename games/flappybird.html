@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flappy Bird</title>
+  <style>
+    body {
+      background: #121212;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #0ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      user-select: none;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #0ff;
+      text-shadow: 0 0 10px #0ff;
+    }
+    #gameContainer {
+      position: relative;
+      width: 800px;
+      height: 700px; /* erhöht */
+      background: #121212;
+      border: 3px solid #0ff;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #0ff;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+      background: #121212;
+      border-radius: 12px;
+    }
+    #score {
+      margin-top: 15px;
+      font-size: 24px;
+      letter-spacing: 2px;
+      text-shadow: 0 0 6px #0ff;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      background: #0ff;
+      color: #121212;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 0 10px #0ff;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #06c;
+      color: #0ff;
+      box-shadow: 0 0 15px #06c;
+    }
+    #status {
+      margin-top: 12px;
+      font-size: 18px;
+      min-height: 24px;
+      letter-spacing: 1px;
+      text-shadow: 0 0 5px #0ff;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Flappy Bird</h1>
+  <div id="gameContainer">
+    <canvas id="gameCanvas" width="600" height="700"></canvas>
+  </div>
+  <div id="score">Punkte: 0</div>
+  <div id="status">Tippe oder Leertaste zum Fliegen!</div>
+  <button id="restartBtn">Neu starten</button>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const width = canvas.width;
+    const height = canvas.height;
+
+    let bird, pipes, frameCount, score, gameOver;
+    const pipeWidth = 50;
+    const pipeGap = 140;
+    const pipeSpeed = 2;
+
+    function init() {
+      bird = {
+        x: 100,
+        y: height / 2,
+        radius: 18,
+        velocity: 0,
+        gravity: 0.06,
+        lift: -3,  // sanfteres Fliegen
+        maxVelocity: 6
+      };
+      pipes = [];
+      frameCount = 0;
+      score = 0;
+      gameOver = false;
+      document.getElementById('score').textContent = `Punkte: ${score}`;
+      document.getElementById('status').textContent = 'Tippe oder Leertaste zum Fliegen!';
+    }
+
+    function drawBird() {
+      ctx.save();
+      ctx.fillStyle = '#0ff';
+      ctx.shadowColor = '#0ff';
+      ctx.shadowBlur = 15;
+      ctx.beginPath();
+      ctx.ellipse(bird.x, bird.y, bird.radius * 1.2, bird.radius, 0, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawPipe(pipe) {
+      ctx.fillStyle = '#0ff';
+      ctx.shadowColor = '#0ff';
+      ctx.shadowBlur = 10;
+      ctx.fillRect(pipe.x, 0, pipeWidth, pipe.top);
+      ctx.fillRect(pipe.x, pipe.bottom, pipeWidth, height - pipe.bottom);
+    }
+
+    function update() {
+      if (gameOver) return;
+
+      frameCount++;
+
+      bird.velocity += bird.gravity;
+      bird.velocity = Math.min(bird.velocity, bird.maxVelocity);
+      bird.y += bird.velocity;
+
+      if (frameCount % 160 === 0) {
+        const topHeight = Math.random() * (height - pipeGap - 80) + 40;
+        pipes.push({
+          x: width,
+          top: topHeight,
+          bottom: topHeight + pipeGap,
+          passed: false
+        });
+      }
+
+      for (let i = 0; i < pipes.length; i++) {
+        pipes[i].x -= pipeSpeed;
+
+        if (!pipes[i].passed && pipes[i].x + pipeWidth < bird.x) {
+          pipes[i].passed = true;
+          score++;
+          document.getElementById('score').textContent = `Punkte: ${score}`;
+        }
+
+        if (pipes[i].x + pipeWidth < 0) {
+          pipes.splice(i, 1);
+          i--;
+        }
+      }
+
+      if (
+        bird.y + bird.radius > height ||
+        bird.y - bird.radius < 0
+      ) {
+        gameOver = true;
+        document.getElementById('status').textContent = 'Game Over! Drücke Neu starten.';
+      }
+
+      for (let pipe of pipes) {
+        if (
+          bird.x + bird.radius > pipe.x &&
+          bird.x - bird.radius < pipe.x + pipeWidth &&
+          (bird.y - bird.radius < pipe.top || bird.y + bird.radius > pipe.bottom)
+        ) {
+          gameOver = true;
+          document.getElementById('status').textContent = 'Game Over! Drücke Neu starten.';
+        }
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      drawBird();
+      for (let pipe of pipes) {
+        drawPipe(pipe);
+      }
+    }
+
+    function loop() {
+      update();
+      draw();
+      if (!gameOver) {
+        requestAnimationFrame(loop);
+      }
+    }
+
+    function fly() {
+      if (!gameOver) {
+        if (bird.velocity > bird.lift) {
+          bird.velocity = bird.lift;
+        }
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        fly();
+      }
+    });
+    window.addEventListener('mousedown', () => {
+      fly();
+    });
+
+    document.getElementById('restartBtn').addEventListener('click', () => {
+      init();
+      loop();
+    });
+
+    init();
+    loop();
+  </script>
+
+</body>
+</html>
