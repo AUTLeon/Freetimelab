@@ -103,7 +103,7 @@ body {
     box-sizing: border-box;
     flex: 0 0 calc(50% - 20px); /* 2 in einer Reihe, minus Abstand */
     max-width: 1000px;
-    min-width: 300px;
+    min-width: 500px;
     text-align: center;
     align-items: center;
     gap: 5px;
