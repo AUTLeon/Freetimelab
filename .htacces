@@ -1,8 +1,8 @@
-Header set Access-Control-Allow-Origin "https://freetimelab.iceiy.com/"
+Header set Access-Control-Allow-Origin "https://freetimelab.iceiy.com"
 php_value date.timezone Europe/Vienna
 
 # Redirections
-Redirect 301 /linktree Https://linktr.ee/flo.thehoe
+Redirect 301 /linktree https://freetimelab.iceiy.com
 
 # Error Pages
 ErrorDocument 400 /ErrorPages/error400.html
