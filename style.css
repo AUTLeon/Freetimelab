@@ -227,13 +227,21 @@ td input {
     text-align: center;
 }
 .gallery {
-      display: grid;
-      grid-template-columns: repeat(6, minmax(150px, 1fr)); /* Kleine Bilder, mindestens 150px */
-      gap: 25px;
-      padding-inline: 150px;
-      padding-bottom: 25px;
-      margin-bottom: 50px;
-      grid-template-rows: 1fr 1fr;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(150px, 1fr));
+  gap: 25px;
+  padding-inline: 150px;
+  padding-bottom: 25px;
+  margin-bottom: 50px;
+  grid-template-rows: 1fr 1fr;
+}
+
+/* Mobile Anpassung */
+@media (max-width: 768px) {
+  .gallery {
+    grid-template-columns: repeat(2, 1fr); /* 2 Spalten auf kleinen Geräten */
+    padding-inline: 15px; /* Weniger Padding */
+  }
 }
 .gallery img {
       width: 100%;   /* Bilder passen sich der Größe des Containers an */
