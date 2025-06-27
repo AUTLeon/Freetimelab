@@ -1,206 +1,342 @@
+/* =========================
+   Basis Layout & Schriftarten
+============================ */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #4D423E;
-    color: #f5f5f5;
-    margin: 0;
+    margin: 0; padding: 0;
+    position: relative;
+    overflow-x: hidden;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: inherit;
+    color: #a75b5b;
+    margin: none;
+    padding: none;
+    font-weight: 700;
+    text-align: center;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+}
+
+h1 { font-size: 2.8rem; }
+h2 { font-size: 2.2rem; }
+h3 { font-size: 1.8rem; }
+
+p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    max-width: 800px;
+    text-align: center;
+    color: #746969;
+}
+
+/* =========================
+   Hintergrund Effekt
+============================ */
+body::before {
+    content: "";
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    width: 600px;
+    height: 600px;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, #a75b5b 0%, transparent 80%);
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* =========================
+   Navigation
+============================ */
+nav {
+    position: relative;
+    z-index: 2;
+    background-color: var(--nav-bg-color);
+    color: var(--nav-text-color);
+    border-radius: 12px;
+    font-size: 15px;
+    padding: 10px 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav ul {
+    margin: 0; padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: var(--nav-text-color);
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    background-color: var(--nav-hover-bg-color);
+    color: var(--nav-hover-text-color);
+}
+/* =========================
+   Game und Search Container
+============================ */
+/* Suchfeld zentrieren */
+.search-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* Container für alle Spiele */
+.game-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    max-width: 1000px; /* Max-Breite für Container */
+    width: 90%;
+    margin: 0 auto 50px auto;
     padding: 0 10px;
+    box-sizing: border-box;
+}
+
+/* Einzelne Spiele */
+.game {
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 80px; /*Gleiche Höhe wie Navbar*/
-}
-/* Navbar */
-.navbar {
-    width: 100%;
-    height: 30px;
-    background-color: #151922;
-    padding: 15px 30px;
-    color: #ffffff;
-    font-size: 1.2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    margin-bottom: 100%; /* Abstand zur Hauptseite */
-}
-.navbar h1 {
-    margin: 0;
-    font-size: 1.7rem;
-    color: #00bcd4;
-}
-.navbar button {
-    padding: 8px;
-    background-color: #ff1744;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-    margin-right: 50px;
     text-align: center;
+    color: #eee;
+    padding-bottom: 10px;
 }
-.navbar button:hover {
-    background-color: #d50000;
+
+.game:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.8);
 }
-/* Main content */
-.main-content {
-    margin-top: 90px; /* Höhe der Navbar + Abstand */
+
+/* Bild der Spiele */
+.game img {
     width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-bottom: 2px solid #ff6b6b;
+    border-radius: 12px 12px 0 0;
+}
+
+/* Titel unter dem Bild */
+.game h2 {
+    margin: 10px 0 0 0;
+    font-size: 1.1rem;
+}
+
+/* Hintergrund als fixed Element */
+body::before {
+    content: "";
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    width: 600px;
+    height: 600px;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, #a75b5b 0%, transparent 80%);
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: -1;
+}
+/* =========================
+   Buttons (mit Variablen)
+============================ */
+.button {
+    background-color: var(--button-bg-color);
+    color: var(--button-text-color);
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.button-rechner {
+    background-color: var(--button-bg-color);
+    color: var(--button-text-color);
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: inline-flex; /* flexibles Layout */
+    align-items: center;
+    justify-content: center;
+}
+.button-rechner:hover {
+    background-color: var(--button-hover-bg-color);
+    color: var(--button-hover-text-color);
+}
+.button:hover {
+    background-color: var(--button-hover-bg-color);
+    color: var(--button-hover-text-color);
+}
+
+/* =========================
+   Farbvariablen (Light & Dark Mode)
+============================ */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --nav-bg-color: #f0f0f0;
+    --nav-text-color: #333333;
+    --nav-hover-bg-color: #a75b5b;
+    --nav-hover-text-color: #ffffff;
+
+    --button-bg-color: #eee;
+    --button-text-color: #333;
+    --button-hover-bg-color: #a75b5b;
+    --button-hover-text-color: #fff;
+}
+
+.dark-mode {
+    --bg-color: #121212;
+    --text-color: #f0f0f0;
+    --nav-bg-color: #1e1e1e;
+    --nav-text-color: #f0f0f0;
+    --nav-hover-bg-color: #a75b5b;
+    --nav-hover-text-color: #ffffff;
+
+    --button-bg-color: #222;
+    --button-text-color: #eee;
+    --button-hover-bg-color: #a75b5b;
+    --button-hover-text-color: #fff;
+}
+/* =========================
+    Links & Hover-Effekte
+============================ */
+a {
+    color: #a75b5b;
+    text-decoration: none;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #a75b5b;
+}
+/* =========================
+   Layout-Container & Content
+============================ */
+.main-content {
+    margin-top: 90px;
     max-width: 1000px;
     display: flex;
-    gap: 25px;
     flex-direction: column;
+    gap: 25px;
     align-items: center;
+    width: 100%;
+    background-color: var(--nav-bg-color);
+    color: var(--nav-text-color);
 }
-/* General container */
-.container {
-    background-color: #191d27;
-    padding: 10px;
+
+.container, .container-text, .container-rechner {
+    background-color: #1e1e1e;
+    padding: 10px 20px;
     border-radius: 12px;
     box-shadow: 0 0 20px rgba(208, 212, 212, 0.05);
-    margin: 20px 0;
+    margin: 20px 0 50px;
     width: 80%;
-    box-sizing: border-box;
-    flex: 0 0 calc(50% - 20px); /* 2 in einer Reihe, minus Abstand */
-    max-width: 500px;
+    max-width: 1000px;
     min-width: 300px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    padding-bottom: 20px;
-    padding-top: 20px;
     gap: 5px;
-    margin-bottom: 50px;
+    background-color: var(--nav-bg-color);
+    color: var(--nav-text-color);
 }
+
 .container-text {
-    background-color: #191d27;
-    padding: 10px;
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(208, 212, 212, 0.05);
-    margin: 20px 0;
-    width: 80%;
-    box-sizing: border-box;
-    flex: 0 0 calc(50% - 20px); /* 2 in einer Reihe, minus Abstand */
-    max-width: 10000px;
     min-width: 800px;
-    text-align: center;
-    align-items: center;
-    padding-bottom: 20px;
-    gap: 5px;
-    margin-bottom: 50px;
+    background-color: var(--nav-bg-color);
+    color: var(--nav-text-color);
 }
+
 .container-rechner {
-    background-color: #191d27;
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(208, 212, 212, 0.05);
-    margin: 20px 0;
-    width: 100%;
-    box-sizing: border-box;
-    flex: 0 0 calc(50% - 20px); /* 2 in einer Reihe, minus Abstand */
-    max-width: 1000px;
     min-width: 500px;
-    text-align: center;
+    justify-content: center;
     align-items: center;
-    gap: 5px;
+    background-color: var(--nav-bg-color);
+    color: var(--nav-text-color);
 }
-.p-rechner {
-    font-size: 1.2rem;
-    color: #f5f5f5;
-    padding-top: 50px !important;
-}
+
 .container-wrapper {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center; /* optional für zentrierte Darstellung */
-    gap: 40px; /* Abstand zwischen den Containern */
+    justify-content: center;
+    gap: 5px;
 }
-/* Kategoriebox */
-.category {
-    background-color: #2a2a2a;
-    padding: 25px;
-    border-radius: 10px;
-    margin-top: 20px;
-    width: 100%;
-    text-align: center;
-}
-.category h3 {
-    color: #00bcd4;
-    font-size: 1.6rem;
-    margin-bottom: 12px;
-}
-/* Buttons */
-.vote-button, button {
-    padding: 12px 24px;
-    background-color: #00bcd4;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-    padding-inline: 30px;
-}
-.vote-button:hover,
-button:hover {
-    background-color: #0097a7;
-}
-/* Appointment Box */
-.appointment-container {
-    background-color: #fafafa;
-    color: #222;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
-    width: 90%;
-    margin-top: 20px;
-    text-align: center;
-}
-/* Form Inputs */
+
+/* =========================
+   Formulare & Inputs
+============================ */
 input, select, textarea {
     padding: 12px;
     border: 1px solid #444;
     border-radius: 6px;
     width: 80%;
     margin-bottom: 15px;
-    background-color: #1e1e1e;
-    color: #f5f5f5;
     font-size: 1rem;
     transition: border 0.3s ease;
+    background-color: var(--nav-bg-color);
+    color: var(--nav-text-color);
 }
+
 input::placeholder, textarea::placeholder {
-    color: #aaa;
+    color: var(--nav-text-color);
 }
+
 input:focus, textarea:focus {
     outline: none;
     border-color: #00bcd4;
 }
-/* Fehleranzeige */
-.error {
-    margin-top: 15px;
-    color: #ff5252;
-}
-/* Text */
-p {
-    font-size: 1.1rem;
-    color: #ccc;
-}
-/* Links */
-a {
-    color: #00bcd4;
-    font-size: 1rem;
-    transition: color 0.3s ease;
-    text-decoration: none;
-}
-a:hover {
-    color: #00e5ff;
-}
-/* Tabellen */
+
+/* =========================
+   Tabellen
+============================ */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -208,6 +344,7 @@ table {
     background-color: #1e1e1e;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
 }
+
 th, td {
     padding: 15px;
     text-align: center;
@@ -215,9 +352,11 @@ th, td {
     font-family: 'Courier New', monospace;
     color: #fff;
 }
+
 th {
     background-color: #2a2a2a;
 }
+
 td input {
     width: 100%;
     padding: 10px;
@@ -226,59 +365,54 @@ td input {
     border-radius: 5px;
     text-align: center;
 }
+
+/* =========================
+   Bildergalerie & Lightbox
+============================ */
 .gallery {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(150px, 1fr));
-  gap: 25px;
-  padding-inline: 150px;
-  padding-bottom: 25px;
-  margin-bottom: 50px;
-  grid-template-rows: 1fr 1fr;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(150px, 1fr));
+    gap: 25px;
+    padding-inline: 150px;
+    padding-bottom: 25px;
+    margin-bottom: 50px;
+    grid-template-rows: 1fr 1fr;
 }
 
-/* Mobile Anpassung */
-@media (max-width: 768px) {
-  .gallery {
-    grid-template-columns: repeat(2, 1fr); /* 2 Spalten auf kleinen Geräten */
-    padding-inline: 15px; /* Weniger Padding */
-  }
-}
 .gallery img {
-      width: 100%;   /* Bilder passen sich der Größe des Containers an */
-      height: 100%;
-      border-radius: 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s;
-      object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
+    object-fit: cover;
 }
+
 .gallery img:hover {
-      transform: scale(1.05);
+    transform: scale(1.05);
 }
-/* Das Overlay für das Lightbox-Bild */
+
 .lightbox {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.8);
     justify-content: center;
     align-items: center;
     z-index: 1000;
 }
+
 .lightbox img {
     max-width: 90%;
     max-height: 90%;
 }
-/* Close-Button für das Overlay */
+
 .close-btn {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    background-color: rgba(255, 255, 255, 0.8);
+    top: 20px; right: 20px;
+    width: 40px; height: 40px;
+    background-color: rgba(255,255,255,0.8);
     border: none;
     font-size: 20px;
     cursor: pointer;
@@ -286,212 +420,254 @@ td input {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
 }
-.button2 {
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    font-size: 1.7rem;
-    margin: 0;
-}
-.search-container {
-    margin-bottom: 20px;
-    width: 100%;
-    max-width: 600px;
-    text-align: center;
-    margin-top: 50px;
-}
-.search-container input {
-    padding: 10px;
-    width: 100%;
-    max-width: 400px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-.game-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
-    width: 100%;
-    max-width: 1000px;
-    margin-bottom: 100px;
-    padding: 50px;
-}
-.game {
-    position: relative;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 8px;
-    width: 45%; /* Mobile-freundliche Breite */
-    height: 200px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    cursor: pointer;
-    overflow: hidden;
-}
-.game img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 8px;
-}
-.game:hover {
-    transform: scale(1.05);
-    background-color: rgba(0, 0, 0, 0.7);
-}
-.game h2 {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 18px;
-    color: white;
-    font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-}
-.downnavbar {
-    width: 100%;
-    background-color: #151922;
-    color: #ffffff;
-    font-size: 1.2rem;
-    display: grid;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    z-index: 1000;
-    margin-bottom: 0px;
-    padding-inline: 5px;
-    margin-top: 500px;
-}
-:root {
-  --bg-color: #ffffff;
-  --text-color: #000000;
-}
-body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  font-family: sans-serif;
-  transition: background-color 0.3s, color 0.3s;
-}
-/* Dark-Mode-Klasse */
-.dark-mode {
-  --bg-color: #121212;
-  --text-color: #f0f0f0;
-}
-button {
-  margin: 1em;
-  padding: 0.5em 1em;
-  cursor: pointer;
-}
-.downloadcontainer {
-    background-color: #1e1e1e;
-    padding: 10px;
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(86, 90, 90, 0.05);
-    margin: 20px 0;
-    width: 80%;
-    max-width: 500px;
-    min-width: 300px;
-    text-align: center;
-    align-items: center;
-    padding-bottom: 20px;
-    gap: 5px;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(150px, 1fr));
-}
+/* =========================
+   Periodic Table Container
+============================ */
 .periodic-table {
   display: grid;
-  grid-template-columns: repeat(18, 60px);
-  gap: 10px;
+  grid-template-columns: repeat(18, 1fr);
+  grid-auto-rows: 60px;
+  gap: 5px;
+  padding-left: 10%;
+  padding-right: 10%;
   justify-content: center;
-  margin-bottom: 80px;
+  margin: 20px auto;
+  max-width: 100%;
+  user-select: none;
 }
-.element {
-  background-color: #494d50;
-  border: 1px solid #999;
-  padding: 10px;
-  text-align: center;
-  font-weight: bold;
-  border-radius: 4px;
-  height: 60px;
-  transition: all 0.2s ease; /* Animation für Hover */
+.periodic-table .element small {
+  color: black !important;
+  font-size: 0.8rem;
+  line-height: 1;
+  margin-top: 4px;
+  display: block;
 }
-.element:hover {
-  background-color: #494d50; /* Hellblau beim Hover */
-  transform: scale(1.1);     /* Leicht vergrößern */
-  z-index: 1;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3); /* Leichter Schatten */
+
+.periodic-table .element, 
+.periodic-table .spacer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #444;
+  border-radius: 8px;
+  background-color: #f0f0f0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
-.spacer {
-    background-color: transparent;
-  /* Leeres Feld zum Überbrücken von Spalten */
+
+.periodic-table .element {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #222;
+  position: relative;
 }
+
+.periodic-table .element small {
+  font-weight: normal;
+  font-size: 0.75rem;
+  color: #666565;
+  margin-top: 4px;
+}
+
+.periodic-table .element:hover {
+  background-color: #e04f4f;
+  box-shadow: 0 0 8px 2px #e04f4fff;
+}
+
+.periodic-table .spacer {
+  border: none;
+  background: transparent;
+  cursor: default;
+}
+
 .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal.hidden {
+  display: none;
 }
 
 .modal-content {
-    background-color: #494d50;
-    padding: 2rem;
-    border-radius: 10px;
-    width: 300px;
-    text-align: center;
-    position: relative;
+  background: white;
+  padding: 20px 30px;
+  border-radius: 12px;
+  max-width: 350px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
+
 .close-button {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    background-color: #cc0000;
-    color: white;
+  background: #ff6b6b;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.close-button:hover {
+  background: #e04f4f;
+}
+
+/* =========================
+   Download Container
+============================ */
+.downloadcontainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 15px;
+  box-sizing: border-box;
+}
+
+.downloadcontainer a {
+  text-decoration: none;
+}
+
+.downloadcontainer .button {
+  width: 100%;
+  padding: 12px 0;
+  font-size: 1rem;
+  background-color: #ff6b6b;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(255, 107, 107, 0.5);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+.downloadcontainer .button:hover {
+  background-color: #e04f4f;
+  transform: translateY(-3px);
+}
+/* =========================
+   Dark Mode Toggle Button
+============================ */
+.dark-mode-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #a75b5b;
+    color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 50px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: bold;
     cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    z-index: 9999;
 }
-.hidden {
-    display: none;
+
+.dark-mode-toggle:hover {
+    background-color: #913f3f;
+    transform: translateY(-2px);
 }
-.result {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #494d50;
-    color: #ffffff;
-    border-radius: 8px;
+/* =========================
+   Weitere Container & Boxen
+============================ */
+/* Appointment Container */
+.appointment-container {
+    width: 90vw;
+    background-color: #21252f;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+    padding: 10px 20px;
+    margin: 20px auto 50px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Category Container */
+.category-container {
+    width: 90vw;
+    padding: 15px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    margin-bottom: 50px;
+    background: linear-gradient(45deg, #662b1d 30%, #a9746e 60%, #55110a 90%);
+    color: #fff;
+}
+
+/* Modal Container */
+.modal-container {
+    width: 80vw;
+    background: #0d1117;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+    padding: 15px 25px;
+    margin: 40px auto;
+    color: #ccc;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
     text-align: center;
-    font-size: 1rem;
 }
-/* Responsive Layout */
+
+/* Periodic Table Container */
+.periodic-table-container {
+    width: 90vw;
+    background-color: #21252f;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px auto 50px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    color: #e6e6e6;
+}
+
+/* =========================
+   Responsive Anpassungen
+============================ */
 @media (max-width: 768px) {
-  body {
-    font-size: 16px;
-    padding: 10px;
-  }
-
-  .main-container {
-    width: 100%;
-  }
-
-  img {
-    max-width: 100%;
-    height: auto;
-  }
-  .main-content {
-    margin-top: 100px;
-  }
+    .gallery {
+        grid-template-columns: repeat(2, 1fr);
+        padding-inline: 15px;
+    }
+    body {
+        font-size: 16px;
+        padding: 10px;
+    }
+    .main-content {
+        margin-top: 100px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    .container-text {
+        min-width: 100%;
+        width: 100%;
+    }
+    .container-rechner {
+        min-width: 100%;
+        width: 100%;
+    }
+    .appointment-container, .category-container, .modal-container, .periodic-table-container {
+        width: 95vw;
+        margin: 15px auto 40px;
+    }
 }

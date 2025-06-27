@@ -8,140 +8,181 @@
         <title>freetimelab</title>
     </head>
     <body>
+        <nav>
+            <ul>
+                <li class="active">
+                    <button class="button" onclick="window.location.href='home.html'">Home</button>
+                </li>
+                <li>
+                    <button class="button" onclick="window.location.href='gallery.html'">Gallery</button>
+                </li>
+                <li>
+                    <button class="button" onclick="window.location.href='games.html'">Games</button>
+                </li>
+                <li>
+                    <button class="button" onclick="window.location.href='downloads.html'">Downloads</button>
+                </li>
+                <li>
+                    <button class="button" onclick="window.location.href='periodictable.html'">Periodic Table</button>
+                </li>
+                <li>
+                    <button class="button" onclick="window.location.href='zahlenrechner.html'">Number System Calculator</button>
+                </li>
+                <li>
+                    <button class="button" onclick="window.location.href='guide.html'">Guide</button>
+                </li>
+                <li>
+                    <button class="button" id="toggle-mode">Dark Mode</button>
+                </li>
+                <li>
+                    <button class="button" onclick="logout()">Logout</button>
+                </li>
+            </ul>
+        </nav>
         <h1>Periodic Table</h1>
         <div class="periodic-table">
             <!-- Erste Zeile -->
             <div class="element" style="grid-column: 1;">H<br><small>1</small></div>
+            <div style="grid-column: 2 / span 16;"></div> <!-- Lücke -->
             <div class="element" style="grid-column: 18;">He<br><small>2</small></div>
+
             <!-- Zweite Zeile -->
             <div class="element" style="grid-column: 1;">Li<br><small>3</small></div>
-            <div class="element">Be<br><small>4</small></div>
-            <div class="spacer" style="grid-column: 3 / span 10;"></div>
-            <div class="element">B<br><small>5</small></div>
-            <div class="element">C<br><small>6</small></div>
-            <div class="element">N<br><small>7</small></div>
-            <div class="element">O<br><small>8</small></div>
-            <div class="element">F<br><small>9</small></div>
-            <div class="element">Ne<br><small>10</small></div>
+            <div class="element" style="grid-column: 2;">Be<br><small>4</small></div>
+            <div style="grid-column: 3 / span 10;"></div> <!-- Lücke -->
+            <div class="element" style="grid-column: 13;">B<br><small>5</small></div>
+            <div class="element" style="grid-column: 14;">C<br><small>6</small></div>
+            <div class="element" style="grid-column: 15;">N<br><small>7</small></div>
+            <div class="element" style="grid-column: 16;">O<br><small>8</small></div>
+            <div class="element" style="grid-column: 17;">F<br><small>9</small></div>
+            <div class="element" style="grid-column: 18;">Ne<br><small>10</small></div>
+
             <!-- Dritte Zeile -->
             <div class="element" style="grid-column: 1;">Na<br><small>11</small></div>
-            <div class="element">Mg<br><small>12</small></div>
-            <div class="spacer" style="grid-column: 3 / span 10;"></div>
-            <div class="element">Al<br><small>13</small></div>
-            <div class="element">Si<br><small>14</small></div>
-            <div class="element">P<br><small>15</small></div>
-            <div class="element">S<br><small>16</small></div>
-            <div class="element">Cl<br><small>17</small></div>
-            <div class="element">Ar<br><small>18</small></div>
+            <div class="element" style="grid-column: 2;">Mg<br><small>12</small></div>
+            <div style="grid-column: 3 / span 10;"></div>
+            <div class="element" style="grid-column: 13;">Al<br><small>13</small></div>
+            <div class="element" style="grid-column: 14;">Si<br><small>14</small></div>
+            <div class="element" style="grid-column: 15;">P<br><small>15</small></div>
+            <div class="element" style="grid-column: 16;">S<br><small>16</small></div>
+            <div class="element" style="grid-column: 17;">Cl<br><small>17</small></div>
+            <div class="element" style="grid-column: 18;">Ar<br><small>18</small></div>
+
             <!-- Vierte Zeile -->
             <div class="element" style="grid-column: 1;">K<br><small>19</small></div>
-            <div class="element">Ca<br><small>20</small></div>
-            <div class="element">Sc<br><small>21</small></div>
-            <div class="element">Ti<br><small>22</small></div>
-            <div class="element">V<br><small>23</small></div>
-            <div class="element">Cr<br><small>24</small></div>
-            <div class="element">Mn<br><small>25</small></div>
-            <div class="element">Fe<br><small>26</small></div>
-            <div class="element">Co<br><small>27</small></div>
-            <div class="element">Ni<br><small>28</small></div>
-            <div class="element">Cu<br><small>29</small></div>
-            <div class="element">Zn<br><small>30</small></div>
-            <div class="element">Ga<br><small>31</small></div>
-            <div class="element">Ge<br><small>32</small></div>
-            <div class="element">As<br><small>33</small></div>
-            <div class="element">Se<br><small>34</small></div>
-            <div class="element">Br<br><small>35</small></div>
-            <div class="element">Kr<br><small>36</small></div>
+            <div class="element" style="grid-column: 2;">Ca<br><small>20</small></div>
+            <div class="element" style="grid-column: 3;">Sc<br><small>21</small></div>
+            <div class="element" style="grid-column: 4;">Ti<br><small>22</small></div>
+            <div class="element" style="grid-column: 5;">V<br><small>23</small></div>
+            <div class="element" style="grid-column: 6;">Cr<br><small>24</small></div>
+            <div class="element" style="grid-column: 7;">Mn<br><small>25</small></div>
+            <div class="element" style="grid-column: 8;">Fe<br><small>26</small></div>
+            <div class="element" style="grid-column: 9;">Co<br><small>27</small></div>
+            <div class="element" style="grid-column: 10;">Ni<br><small>28</small></div>
+            <div class="element" style="grid-column: 11;">Cu<br><small>29</small></div>
+            <div class="element" style="grid-column: 12;">Zn<br><small>30</small></div>
+            <div class="element" style="grid-column: 13;">Ga<br><small>31</small></div>
+            <div class="element" style="grid-column: 14;">Ge<br><small>32</small></div>
+            <div class="element" style="grid-column: 15;">As<br><small>33</small></div>
+            <div class="element" style="grid-column: 16;">Se<br><small>34</small></div>
+            <div class="element" style="grid-column: 17;">Br<br><small>35</small></div>
+            <div class="element" style="grid-column: 18;">Kr<br><small>36</small></div>
+
             <!-- Fünfte Zeile -->
             <div class="element" style="grid-column: 1;">Rb<br><small>37</small></div>
-            <div class="element">Sr<br><small>38</small></div>
-            <div class="element">Y<br><small>39</small></div>
-            <div class="element">Zr<br><small>40</small></div>
-            <div class="element">Nb<br><small>41</small></div>
-            <div class="element">Mo<br><small>42</small></div>
-            <div class="element">Tc<br><small>43</small></div>
-            <div class="element">Ru<br><small>44</small></div>
-            <div class="element">Rh<br><small>45</small></div>
-            <div class="element">Pd<br><small>46</small></div>
-            <div class="element">Ag<br><small>47</small></div>
-            <div class="element">Cd<br><small>48</small></div>
-            <div class="element">In<br><small>49</small></div>
-            <div class="element">Sn<br><small>50</small></div>
-            <div class="element">Sb<br><small>51</small></div>
-            <div class="element">Te<br><small>52</small></div>
-            <div class="element">I<br><small>53</small></div>
-            <div class="element">Xe<br><small>54</small></div>
+            <div class="element" style="grid-column: 2;">Sr<br><small>38</small></div>
+            <div class="element" style="grid-column: 3;">Y<br><small>39</small></div>
+            <div class="element" style="grid-column: 4;">Zr<br><small>40</small></div>
+            <div class="element" style="grid-column: 5;">Nb<br><small>41</small></div>
+            <div class="element" style="grid-column: 6;">Mo<br><small>42</small></div>
+            <div class="element" style="grid-column: 7;">Tc<br><small>43</small></div>
+            <div class="element" style="grid-column: 8;">Ru<br><small>44</small></div>
+            <div class="element" style="grid-column: 9;">Rh<br><small>45</small></div>
+            <div class="element" style="grid-column: 10;">Pd<br><small>46</small></div>
+            <div class="element" style="grid-column: 11;">Ag<br><small>47</small></div>
+            <div class="element" style="grid-column: 12;">Cd<br><small>48</small></div>
+            <div class="element" style="grid-column: 13;">In<br><small>49</small></div>
+            <div class="element" style="grid-column: 14;">Sn<br><small>50</small></div>
+            <div class="element" style="grid-column: 15;">Sb<br><small>51</small></div>
+            <div class="element" style="grid-column: 16;">Te<br><small>52</small></div>
+            <div class="element" style="grid-column: 17;">I<br><small>53</small></div>
+            <div class="element" style="grid-column: 18;">Xe<br><small>54</small></div>
+
             <!-- Sechste Zeile -->
             <div class="element" style="grid-column: 1;">Cs<br><small>55</small></div>
-            <div class="element">Ba<br><small>56</small></div>
-            <div class="element">Lu<br><small>57</small></div>
-            <div class="element">Hf<br><small>58</small></div>
-            <div class="element">Ta<br><small>59</small></div>
-            <div class="element">W<br><small>60</small></div>
-            <div class="element">Re<br><small>61</small></div>
-            <div class="element">Os<br><small>62</small></div>
-            <div class="element">Ir<br><small>63</small></div>
-            <div class="element">Pt<br><small>64</small></div>
-            <div class="element">Au<br><small>65</small></div>
-            <div class="element">Hg<br><small>66</small></div>
-            <div class="element">Tl<br><small>67</small></div>
-            <div class="element">Pb<br><small>68</small></div>
-            <div class="element">Bi<br><small>69</small></div>
-            <div class="element">Po<br><small>70</small></div>
-            <div class="element">At<br><small>71</small></div>
-            <div class="element">Rn<br><small>72</small></div>
+            <div class="element" style="grid-column: 2;">Ba<br><small>56</small></div>
+            <div class="element" style="grid-column: 3;">La<br><small>57</small></div>
+            <div class="element" style="grid-column: 4;">Hf<br><small>72</small></div>
+            <div class="element" style="grid-column: 5;">Ta<br><small>73</small></div>
+            <div class="element" style="grid-column: 6;">W<br><small>74</small></div>
+            <div class="element" style="grid-column: 7;">Re<br><small>75</small></div>
+            <div class="element" style="grid-column: 8;">Os<br><small>76</small></div>
+            <div class="element" style="grid-column: 9;">Ir<br><small>77</small></div>
+            <div class="element" style="grid-column: 10;">Pt<br><small>78</small></div>
+            <div class="element" style="grid-column: 11;">Au<br><small>79</small></div>
+            <div class="element" style="grid-column: 12;">Hg<br><small>80</small></div>
+            <div class="element" style="grid-column: 13;">Tl<br><small>81</small></div>
+            <div class="element" style="grid-column: 14;">Pb<br><small>82</small></div>
+            <div class="element" style="grid-column: 15;">Bi<br><small>83</small></div>
+            <div class="element" style="grid-column: 16;">Po<br><small>84</small></div>
+            <div class="element" style="grid-column: 17;">At<br><small>85</small></div>
+            <div class="element" style="grid-column: 18;">Rn<br><small>86</small></div>
+
             <!-- Siebte Zeile -->
             <div class="element" style="grid-column: 1;">Fr<br><small>87</small></div>
-            <div class="element">Ra<br><small>88</small></div>
-            <div class="element">Lr<br><small>103</small></div>
-            <div class="element">Rf<br><small>104</small></div>
-            <div class="element">Db<br><small>105</small></div>
-            <div class="element">Sg<br><small>106</small></div>
-            <div class="element">Bh<br><small>107</small></div>
-            <div class="element">Hs<br><small>108</small></div>
-            <div class="element">Mt<br><small>109</small></div>
-            <div class="element">Ds<br><small>110</small></div>
-            <div class="element">Rg<br><small>111</small></div>
-            <div class="element">Cn<br><small>112</small></div>
-            <div class="element">Nh<br><small>113</small></div>
-            <div class="element">Fl<br><small>114</small></div>
-            <div class="element">Mc<br><small>115</small></div>
-            <div class="element">Lv<br><small>116</small></div>
-            <div class="element">Ts<br><small>117</small></div>
-            <div class="element">Og<br><small>118</small></div>
-            <!-- Achte Zeile -->
-            <div class="spacer" style="grid-column: 2 / span 1;"></div>
-            <div class="element">La<br><small>57</small></div>
-            <div class="element">Ce<br><small>58</small></div>
-            <div class="element">Pr<br><small>59</small></div>
-            <div class="element">Nd<br><small>60</small></div>
-            <div class="element">Pm<br><small>61</small></div>
-            <div class="element">Sm<br><small>62</small></div>
-            <div class="element">Eu<br><small>63</small></div>
-            <div class="element">Gd<br><small>64</small></div>
-            <div class="element">Tb<br><small>65</small></div>
-            <div class="element">Dy<br><small>66</small></div>
-            <div class="element">Ho<br><small>67</small></div>
-            <div class="element">Er<br><small>68</small></div>
-            <div class="element">Tm<br><small>69</small></div>
-            <div class="element">Yb<br><small>70</small></div>
-            <!-- neunte Zeile -->
-            <div class="spacer" style="grid-column: 2 / span 1;"></div>
-            <div class="element">Ac<br><small>89</small></div>
-            <div class="element">Th<br><small>90</small></div>
-            <div class="element">Pa<br><small>91</small></div>
-            <div class="element">U<br><small>92</small></div>
-            <div class="element">Np<br><small>93</small></div>
-            <div class="element">Pu<br><small>94</small></div>
-            <div class="element">Am<br><small>95</small></div>
-            <div class="element">Cm<br><small>96</small></div>
-            <div class="element">Bk<br><small>97</small></div>
-            <div class="element">Cf<br><small>98</small></div>
-            <div class="element">Es<br><small>99</small></div>
-            <div class="element">Fm<br><small>100</small></div>
-            <div class="element">Md<br><small>101</small></div>
-            <div class="element">No<br><small>102</small></div>
+            <div class="element" style="grid-column: 2;">Ra<br><small>88</small></div>
+            <div class="element" style="grid-column: 3;">Ac<br><small>89</small></div>
+            <div class="element" style="grid-column: 4;">Rf<br><small>104</small></div>
+            <div class="element" style="grid-column: 5;">Db<br><small>105</small></div>
+            <div class="element" style="grid-column: 6;">Sg<br><small>106</small></div>
+            <div class="element" style="grid-column: 7;">Bh<br><small>107</small></div>
+            <div class="element" style="grid-column: 8;">Hs<br><small>108</small></div>
+            <div class="element" style="grid-column: 9;">Mt<br><small>109</small></div>
+            <div class="element" style="grid-column: 10;">Ds<br><small>110</small></div>
+            <div class="element" style="grid-column: 11;">Rg<br><small>111</small></div>
+            <div class="element" style="grid-column: 12;">Cn<br><small>112</small></div>
+            <div class="element" style="grid-column: 13;">Nh<br><small>113</small></div>
+            <div class="element" style="grid-column: 14;">Fl<br><small>114</small></div>
+            <div class="element" style="grid-column: 15;">Mc<br><small>115</small></div>
+            <div class="element" style="grid-column: 16;">Lv<br><small>116</small></div>
+            <div class="element" style="grid-column: 17;">Ts<br><small>117</small></div>
+            <div class="element" style="grid-column: 18;">Og<br><small>118</small></div>
+
+            <!-- Lanthanoide (achte Zeile) -->
+            <div style="grid-column: 2;"></div> <!-- spacer -->
+            <div class="element" style="grid-column: 3;">La<br><small>57</small></div>
+            <div class="element" style="grid-column: 4;">Ce<br><small>58</small></div>
+            <div class="element" style="grid-column: 5;">Pr<br><small>59</small></div>
+            <div class="element" style="grid-column: 6;">Nd<br><small>60</small></div>
+            <div class="element" style="grid-column: 7;">Pm<br><small>61</small></div>
+            <div class="element" style="grid-column: 8;">Sm<br><small>62</small></div>
+            <div class="element" style="grid-column: 9;">Eu<br><small>63</small></div>
+            <div class="element" style="grid-column: 10;">Gd<br><small>64</small></div>
+            <div class="element" style="grid-column: 11;">Tb<br><small>65</small></div>
+            <div class="element" style="grid-column: 12;">Dy<br><small>66</small></div>
+            <div class="element" style="grid-column: 13;">Ho<br><small>67</small></div>
+            <div class="element" style="grid-column: 14;">Er<br><small>68</small></div>
+            <div class="element" style="grid-column: 15;">Tm<br><small>69</small></div>
+            <div class="element" style="grid-column: 16;">Yb<br><small>70</small></div>
+
+            <!-- Actinoide (neunte Zeile) -->
+            <div style="grid-column: 2;"></div> <!-- spacer -->
+            <div class="element" style="grid-column: 3;">Ac<br><small>89</small></div>
+            <div class="element" style="grid-column: 4;">Th<br><small>90</small></div>
+            <div class="element" style="grid-column: 5;">Pa<br><small>91</small></div>
+            <div class="element" style="grid-column: 6;">U<br><small>92</small></div>
+            <div class="element" style="grid-column: 7;">Np<br><small>93</small></div>
+            <div class="element" style="grid-column: 8;">Pu<br><small>94</small></div>
+            <div class="element" style="grid-column: 9;">Am<br><small>95</small></div>
+            <div class="element" style="grid-column: 10;">Cm<br><small>96</small></div>
+            <div class="element" style="grid-column: 11;">Bk<br><small>97</small></div>
+            <div class="element" style="grid-column: 12;">Cf<br><small>98</small></div>
+            <div class="element" style="grid-column: 13;">Es<br><small>99</small></div>
+            <div class="element" style="grid-column: 14;">Fm<br><small>100</small></div>
+            <div class="element" style="grid-column: 15;">Md<br><small>101</small></div>
+            <div class="element" style="grid-column: 16;">No<br><small>102</small></div>
         </div>
+
         <div id="element-modal" class="modal hidden">
             <div class="modal-content">
                 <button id="close-modal" class="close-button">Schließen</button>
@@ -149,14 +190,6 @@
                 <p id="element-number"></p>
                 <!-- Optional: weitere Informationen hier -->
             </div>
-        </div>
-        <div class="navbar">
-            <a href="content.html"><h1>freetimelab</h1></a>
-            <button id="toggle-mode">Dark Mode</button>
-            <button onclick="logout()">b-logout</button>
-        </div>
-        <div class="downnavbar">
-            <p>If you find any errors, please contact the following email address: autleongames@gmail.com</p>
         </div>
         <script src="script.js"></script>
     </body>

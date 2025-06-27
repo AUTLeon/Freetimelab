@@ -8,7 +8,38 @@
         <title>freetimelab</title>
     </head>
     <body>
-        <h1>gallery</h1>
+        <nav>
+            <ul>
+                <li class="active">
+                    <button class="button" onclick="window.location.href='home.html'">Home</button>
+                </li>
+                <li>
+                    <button class="button" onclick="window.location.href='gallery.html'">Gallery</button>
+                </li>
+                <li>
+                    <button class="button" onclick="window.location.href='games.html'">Games</button>
+                </li>
+                <li>
+                    <button class="button" onclick="window.location.href='downloads.html'">Downloads</button>
+                </li>
+                <li>
+                    <button class="button" onclick="window.location.href='periodictable.html'">Periodic Table</button>
+                </li>
+                <li>
+                    <button class="button" onclick="window.location.href='zahlenrechner.html'">Number System Calculator</button>
+                </li>
+                <li>
+                    <button class="button" onclick="window.location.href='guide.html'">Guide</button>
+                </li>
+                <li>
+                    <button class="button" id="toggle-mode">Dark Mode</button>
+                </li>
+                <li>
+                    <button class="button" onclick="logout()">Logout</button>
+                </li>
+            </ul>
+        </nav>
+        <h1>Gallery</h1>
         <h2>Nature & Buildings</h2>
         <div class="gallery">
             <img src=".\images\gallery\bild1.jpg" alt="Image 1" onclick="openLightbox(this)">
@@ -32,14 +63,6 @@
             <img src=".\images\gallery\bild16.jpg" alt="Image 16" onclick="openLightbox(this)">
             <img src=".\images\gallery\bild17.jpg" alt="Image 17" onclick="openLightbox(this)">
             <img src=".\images\gallery\bild18.jpg" alt="Image 18" onclick="openLightbox(this)">
-        </div>     
-        <div class="navbar">
-            <a href="content.html"><h1>freetimelab</h1></a>
-            <button id="toggle-mode">Dark Mode</button>
-            <button onclick="logout()">logout</button>
-        </div>
-        <div class="downnavbar">
-            <p>If you find any errors, please contact the following email address: autleongames@gmail.com</p>
         </div>
         <div id="lightbox" class="lightbox">
             <button class="close-btn" onclick="closeLightbox()">X</button>
