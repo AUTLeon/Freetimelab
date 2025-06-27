@@ -28,7 +28,7 @@ async function login() {
     const hashedPassword = hashSHA256(password);
 
     if (validCredentials[hashedUsername] === hashedPassword) {
-        window.location.href = 'content.html';
+        window.location.href = 'home.html';
     } else {
         errorMessage.textContent = 'Invalid username or b-ID. May you try again.';
     }
