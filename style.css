@@ -72,6 +72,7 @@ body {
     text-align: center;
     align-items: center;
     padding-bottom: 20px;
+    padding-top: 20px;
     gap: 5px;
     margin-bottom: 50px;
 }
@@ -102,7 +103,7 @@ body {
     box-sizing: border-box;
     flex: 0 0 calc(50% - 20px); /* 2 in einer Reihe, minus Abstand */
     max-width: 1000px;
-    min-width: 300px;
+    min-width: 500px;
     text-align: center;
     align-items: center;
     gap: 5px;
@@ -226,13 +227,21 @@ td input {
     text-align: center;
 }
 .gallery {
-      display: grid;
-      grid-template-columns: repeat(6, minmax(150px, 1fr)); /* Kleine Bilder, mindestens 150px */
-      gap: 25px;
-      padding-inline: 150px;
-      padding-bottom: 25px;
-      margin-bottom: 50px;
-      grid-template-rows: 1fr 1fr;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(150px, 1fr));
+  gap: 25px;
+  padding-inline: 150px;
+  padding-bottom: 25px;
+  margin-bottom: 50px;
+  grid-template-rows: 1fr 1fr;
+}
+
+/* Mobile Anpassung */
+@media (max-width: 768px) {
+  .gallery {
+    grid-template-columns: repeat(2, 1fr); /* 2 Spalten auf kleinen Geräten */
+    padding-inline: 15px; /* Weniger Padding */
+  }
 }
 .gallery img {
       width: 100%;   /* Bilder passen sich der Größe des Containers an */
