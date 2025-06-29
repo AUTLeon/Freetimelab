@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>3D Molekül Viewer</title>
+  <script src="https://3dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px 20px;
+      background: #f9f9f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #222;
+      z-index: 10;
+    }
+    #molecule-select {
+      margin-bottom: 20px;
+      font-size: 1.1em;
+      padding: 6px 12px;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+      cursor: pointer;
+      width: 220px;
+    }
+    #viewer {
+      width: 500px;
+      height: 500px;
+      border-radius: 10px;
+      background: white;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      position: relative;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>3D Molekül Viewer</h1>
+  <select id="molecule-select" aria-label="Molekül auswählen">
+    <option value="h2o">Wasser (H₂O)</option>
+    <option value="co2">Kohlendioxid (CO₂)</option>
+    <option value="nh3">Ammoniak (NH₃)</option>
+    <option value="ch4">Methan (CH₄)</option>
+  </select>
+
+  <div id="viewer"></div>
+
+  <script>
+    const molecules = {
+      h2o: `
+HETATM    1  O   HOH A   1       0.000   0.000   0.000  1.00  0.00           O  
+HETATM    2  H1  HOH A   1       0.757   0.586   0.000  1.00  0.00           H  
+HETATM    3  H2  HOH A   1      -0.757   0.586   0.000  1.00  0.00           H  
+END
+      `,
+      co2: `
+HETATM    1  O1  CO2 A   1       0.000   0.000   1.160  1.00  0.00           O  
+HETATM    2  C   CO2 A   1       0.000   0.000   0.000  1.00  0.00           C  
+HETATM    3  O2  CO2 A   1       0.000   0.000  -1.160  1.00  0.00           O  
+END
+      `,
+      nh3: `
+HETATM    1  N   NH3 A   1       0.000   0.000   0.000  1.00  0.00           N  
+HETATM    2  H1  NH3 A   1       0.940   0.000  -0.340  1.00  0.00           H  
+HETATM    3  H2  NH3 A   1      -0.470   0.814  -0.340  1.00  0.00           H  
+HETATM    4  H3  NH3 A   1      -0.470  -0.814  -0.340  1.00  0.00           H  
+END
+      `,
+      ch4: `
+HETATM    1  C   CH4 A   1       0.000   0.000   0.000  1.00  0.00           C  
+HETATM    2  H1  CH4 A   1       0.629   0.629   0.629  1.00  0.00           H  
+HETATM    3  H2  CH4 A   1      -0.629  -0.629   0.629  1.00  0.00           H  
+HETATM    4  H3  CH4 A   1      -0.629   0.629  -0.629  1.00  0.00           H  
+HETATM    5  H4  CH4 A   1       0.629  -0.629  -0.629  1.00  0.00           H  
+END
+      `
+    };
+
+    let viewer;
+
+    function initViewer() {
+      if (!viewer) {
+        viewer = $3Dmol.createViewer("viewer", {
+          defaultcolors: $3Dmol.rasmolElementColors,
+          backgroundColor: "white"
+        });
+      }
+    }
+
+    function loadMolecule(name) {
+      initViewer();
+      viewer.clear();
+      viewer.addModel(molecules[name], "pdb");
+      viewer.setStyle({}, {stick: {radius: 0.25}, sphere: {radius: 0.4}});
+      viewer.zoomTo();
+      viewer.render();
+    }
+
+    document.getElementById("molecule-select").addEventListener("change", (event) => {
+      loadMolecule(event.target.value);
+    });
+
+    // Initial laden
+    loadMolecule("h2o");
+  </script>
+
+</body>
+</html>
