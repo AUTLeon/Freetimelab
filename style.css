@@ -407,7 +407,17 @@ td input {
     max-width: 90%;
     max-height: 90%;
 }
-
+.lightbox-caption {
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+    color: white;
+    font-size: 16px;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 6px 10px;
+    border-radius: 5px;
+    max-width: 80%;
+}
 .close-btn {
     position: absolute;
     top: 20px; right: 20px;

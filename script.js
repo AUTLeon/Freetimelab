@@ -147,3 +147,16 @@ function convertNumber() {
     const converted = decimal.toString(base).toUpperCase();
     document.getElementById("result").textContent = converted;
 }
+function openLightbox(imgElement) {
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightbox-image");
+    const caption = document.getElementById("lightbox-caption");
+
+    lightbox.style.display = "flex";
+    lightboxImg.src = imgElement.src;
+    caption.textContent = imgElement.alt;
+}
+
+function closeLightbox() {
+    document.getElementById("lightbox").style.display = "none";
+}
