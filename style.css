@@ -432,6 +432,61 @@ td input {
     justify-content: center;
 }
 /* =========================
+   Chemlab
+============================ */
+.elements {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.element {
+    padding: 15px 25px;
+    background: #4CAF50;
+    color: white;
+    border-radius: 8px;
+    cursor: grab;
+    font-weight: bold;
+    user-select: none;
+}
+
+.reaction-zone {
+    width: 100%;
+    max-width: 600px;
+    height: 200px;
+    margin: 20px auto;
+    background: white;
+    border: 3px dashed #aaa;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px;
+    box-shadow: 0 0 10px #ccc;
+    position: relative;
+}
+
+.reaction-zone p {
+    color: #777;
+    font-style: italic;
+}
+
+.dropped {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 18px;
+    background: #2196F3;
+    color: white;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+#result {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #333;
+}
+/* =========================
    Periodic Table Container
 ============================ */
 .periodic-table {

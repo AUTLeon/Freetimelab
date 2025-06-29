@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chemical Reaction Tool</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="./images/icons/icon.jpg" type="image/jpg">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li class="active">
+                <button class="button" onclick="window.location.href='home.html'">Home</button>
+            </li>
+            <li>
+                <button class="button" onclick="window.location.href='gallery.html'">Gallery</button>
+            </li>
+            <li>
+                <button class="button" onclick="window.location.href='games.html'">Games</button>
+            </li>
+            <li>
+                <button class="button" onclick="window.location.href='downloads.html'">Downloads</button>
+            </li>
+            <li>
+                <button class="button" onclick="window.location.href='periodictable.html'">Periodic Table</button>
+            </li>
+            <li>
+                <button class="button" onclick="window.location.href='zahlenrechner.html'">Number System Calculator</button>
+            </li>
+            <li>
+                <button class="button" onclick="window.location.href='chemlab.html'">Chemical Reaction Builder</button>
+            </li>
+            <li>
+                <button class="button" onclick="window.location.href='guide.html'">Guide</button>
+            </li>
+            <li>
+                <button class="button" id="toggle-mode">Dark Mode</button>
+            </li>
+            <li>
+                <button class="button" onclick="logout()">Logout</button>
+            </li>
+        </ul>
+    </nav>
+    <h1>Chemical Reaction Builder</h1>
+
+    <div class="elements">
+        <div class="element" draggable="true" ondragstart="drag(event)" data-element="H₂">H₂</div>
+        <div class="element" draggable="true" ondragstart="drag(event)" data-element="O₂">O₂</div>
+        <div class="element" draggable="true" ondragstart="drag(event)" data-element="CO₂">CO₂</div>
+        <div class="element" draggable="true" ondragstart="drag(event)" data-element="CH₄">CH₄</div>
+    </div>
+
+    <div class="reaction-zone" ondrop="drop(event)" ondragover="allowDrop(event)" id="reaction-zone">
+        <p>Drop elements here to simulate a reaction</p>
+    </div>
+
+    <div style="text-align: center;">
+        <button class="button" onclick="checkReaction()">Check Reaction</button>
+        <button class="button" onclick="resetReaction()">Reset Reaction</button>
+    </div>
+
+    <div id="result"></div>
+    <script src="script.js"></script>
+</body>
+</html>

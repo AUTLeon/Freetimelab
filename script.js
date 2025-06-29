@@ -160,3 +160,49 @@ function openLightbox(imgElement) {
 function closeLightbox() {
     document.getElementById("lightbox").style.display = "none";
 }
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.getAttribute('data-element'));
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    const data = ev.dataTransfer.getData("text");
+    const dropped = document.createElement("div");
+    dropped.className = "dropped";
+    dropped.innerText = data;
+    dropped.setAttribute("data-element", data);
+    document.getElementById("reaction-zone").appendChild(dropped);
+}
+
+function checkReaction() {
+    const zone = document.getElementById("reaction-zone");
+    const elements = zone.querySelectorAll(".dropped");
+    const counts = {};
+
+    elements.forEach(el => {
+        const name = el.getAttribute("data-element");
+        counts[name] = (counts[name] || 0) + 1;
+    });
+
+    const result = document.getElementById("result");
+
+    if (counts["H₂"] === 2 && counts["O₂"] === 1) {
+        result.innerHTML = "✅ Correct! 2 H₂ + O₂ → 2 H₂O (Knallgasreaktion)";
+    } else {
+        result.innerHTML = "❌ No valid reaction detected. Try 2 H₂ and 1 O₂.";
+    }
+}
+function resetReaction() {
+    const zone = document.getElementById("reaction-zone");
+    // Entferne alle Elemente mit Klasse "dropped"
+    const droppedElements = zone.querySelectorAll(".dropped");
+    droppedElements.forEach(el => el.remove());
+
+    // Optional: Ergebnis-Text zurücksetzen
+    const result = document.getElementById("result");
+    result.innerHTML = "";
+}
