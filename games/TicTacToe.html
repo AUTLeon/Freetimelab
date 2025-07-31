@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../style.css">
   <title>Tic Tac Toe</title>
   <style>
     body {
@@ -51,6 +53,7 @@
       cursor: pointer;
       transition: background 0.3s, color 0.3s;
     }
+
     .cell:hover {
       background: #1e406d;
       box-shadow:
@@ -80,6 +83,7 @@
       box-shadow: 0 0 12px #38b6ffaa;
       transition: background 0.3s, box-shadow 0.3s;
     }
+
     button:hover {
       background: #1c6cd9;
       box-shadow: 0 0 20px #1c6cd9cc;
@@ -87,8 +91,17 @@
     }
   </style>
 </head>
-<body>
 
+<body>
+  <nav>
+    <ul>
+      <li class="logofont">
+        <a href="../index.html">
+          Freetimelab
+        </a>
+      </li>
+    </ul>
+  </nav>
   <h1>Tic Tac Toe</h1>
   <div id="board"></div>
   <div id="status">Spieler X ist am Zug</div>
@@ -144,12 +157,12 @@
 
     function checkWin(player) {
       const winPatterns = [
-        [0,1,2], [3,4,5], [6,7,8], // Reihen
-        [0,3,6], [1,4,7], [2,5,8], // Spalten
-        [0,4,8], [2,4,6]           // Diagonalen
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Reihen
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Spalten
+        [0, 4, 8], [2, 4, 6]           // Diagonalen
       ];
 
-      return winPatterns.some(pattern => 
+      return winPatterns.some(pattern =>
         pattern.every(index => cells[index].textContent === player)
       );
     }
@@ -161,4 +174,5 @@
     createBoard();
   </script>
 </body>
+
 </html>

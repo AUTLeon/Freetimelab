@@ -37,9 +37,6 @@ async function login() {
 // Load credentials on page load
 window.onload = loadCredentials;
 
-// Dark-/Light-Mode Umschalter
-const toggleButton = document.getElementById("toggle-mode");
-
 // Aktualisiert den Button-Text basierend auf dem aktuellen Modus
 function updateToggleButtonText() {
     if (document.body.classList.contains("dark-mode")) {
@@ -140,7 +137,7 @@ function convertNumber() {
     const base = parseInt(document.getElementById("baseSelect").value);
 
     if (isNaN(decimal)) {
-        document.getElementById("result").textContent = "Bitte eine gültige Dezimalzahl eingeben.";
+        document.getElementById("result").textContent = "Please enter a valid decimal number.";
         return;
     }
 
@@ -165,16 +162,28 @@ function allowDrop(ev) {
 }
 
 function drag(ev) {
+    // Nutze den technischen Namen, z. B. "H2"
     ev.dataTransfer.setData("text", ev.target.getAttribute('data-element'));
 }
 
 function drop(ev) {
     ev.preventDefault();
     const data = ev.dataTransfer.getData("text");
+
+    // Erstelle neues Element für die Reaktion-Zone
     const dropped = document.createElement("div");
     dropped.className = "dropped";
-    dropped.innerText = data;
-    dropped.setAttribute("data-element", data);
+
+    // Zeige hübsche Formel abhängig vom technischen Namen
+    let displayText = data;
+    if (data === "H2") displayText = "H₂";
+    if (data === "O2") displayText = "O₂";
+    if (data === "CO2") displayText = "CO₂";
+    if (data === "CH4") displayText = "CH₄";
+
+    dropped.innerText = displayText;
+    dropped.setAttribute("data-element", data); // Intern bleibt es z. B. "H2"
+
     document.getElementById("reaction-zone").appendChild(dropped);
 }
 
@@ -188,21 +197,20 @@ function checkReaction() {
         counts[name] = (counts[name] || 0) + 1;
     });
 
-    const result = document.getElementById("result");
+    const result = document.getElementById("result-chemlab");
 
-    if (counts["H₂"] === 2 && counts["O₂"] === 1) {
+    if (counts["H2"] === 2 && counts["O2"] === 1) {
         result.innerHTML = "✅ Correct! 2 H₂ + O₂ → 2 H₂O (Knallgasreaktion)";
     } else {
         result.innerHTML = "❌ No valid reaction detected. Try 2 H₂ and 1 O₂.";
     }
 }
+
 function resetReaction() {
     const zone = document.getElementById("reaction-zone");
-    // Entferne alle Elemente mit Klasse "dropped"
     const droppedElements = zone.querySelectorAll(".dropped");
     droppedElements.forEach(el => el.remove());
 
-    // Optional: Ergebnis-Text zurücksetzen
-    const result = document.getElementById("result");
+    const result = document.getElementById("result-chemlab");
     result.innerHTML = "";
 }

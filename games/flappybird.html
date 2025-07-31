@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../style.css">
   <title>Flappy Bird</title>
   <style>
     body {
@@ -17,32 +19,38 @@
       margin: 0;
       user-select: none;
     }
+
     h1 {
       margin-bottom: 20px;
       color: #0ff;
       text-shadow: 0 0 10px #0ff;
     }
+
     #gameContainer {
       position: relative;
       width: 800px;
-      height: 700px; /* erhöht */
+      height: 700px;
+      /* erhöht */
       background: #121212;
       border: 3px solid #0ff;
       border-radius: 12px;
       box-shadow: 0 0 20px #0ff;
       overflow: hidden;
     }
+
     canvas {
       display: block;
       background: #121212;
       border-radius: 12px;
     }
+
     #score {
       margin-top: 15px;
       font-size: 24px;
       letter-spacing: 2px;
       text-shadow: 0 0 6px #0ff;
     }
+
     button {
       margin-top: 20px;
       padding: 10px 20px;
@@ -56,11 +64,13 @@
       box-shadow: 0 0 10px #0ff;
       transition: background 0.3s;
     }
+
     button:hover {
       background: #06c;
       color: #0ff;
       box-shadow: 0 0 15px #06c;
     }
+
     #status {
       margin-top: 12px;
       font-size: 18px;
@@ -70,8 +80,17 @@
     }
   </style>
 </head>
-<body>
 
+<body>
+  <nav>
+    <ul>
+      <li class="logofont">
+        <a href="../index.html">
+          Freetimelab
+        </a>
+      </li>
+    </ul>
+  </nav>
   <h1>Flappy Bird</h1>
   <div id="gameContainer">
     <canvas id="gameCanvas" width="600" height="700"></canvas>
@@ -227,4 +246,5 @@
   </script>
 
 </body>
+
 </html>
