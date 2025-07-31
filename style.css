@@ -17,6 +17,10 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 .image-container {
     background-image: cover;
 }
@@ -549,12 +553,14 @@ td input {
     font-size: 1.2em;
     color: white;
 }
+
 #result-chemlab {
     text-align: center;
     margin-top: 20px;
     font-size: 1.2em;
     color: white;
 }
+
 /* =========================
    Periodic Table Container
 ============================ */
